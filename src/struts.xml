@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+  
+    <constant name="struts.multipart.saveDir" value="/temp" />
+    <constant name="struts.i18n.encoding" value="UTF-8" />
+    <constant name="struts.devMode" value="true" />
+    <constant name="struts.objectFactory" value="spring"/>	
+         <!-- 登录-->
+	<package name="default" extends="struts-default" namespace="/">
+		<action name="userlogin" class="com.wanggang.web.action.UsersAction" method="login">
+		    <result name="login_success">/main.jsp</result>
+			<result name="login_out">/login.jsp</result>
+			<result name="fail">/error.jsp</result>
+		</action>
+	     <!-- 注销-->	
+		<action name="userout" class="com.wanggang.web.action.UsersAction" method="out">
+			<result name="out_success" >/login.jsp</result>
+			<result name="input">/error.jsp</result>
+		</action>
+	    <!-- 添加员工信息 -->
+	<action name="adduser" class="com.wanggang.web.action.UsersAction" method="add">
+	        <result name="account_success">/tab/tab_add_user.jsp</result>
+            <result name="fail">/tab/tab_add_user.jsp</result>
+            <result name="input">/tab/tab_add_user.jsp</result>
+	</action>
+		<!-- 查看员工信息 -->
+	<action name="selectusers" class="com.wanggang.web.action.UsersAction" method="selectusers">
+	        <result name="users_success">/tab/user_ information.jsp</result>
+            <result name="input">/error.jsp</result>
+	</action>	
+		<!-- 修改员工信息 -->
+	<action name="updateuser" class="com.wanggang.web.action.UsersAction" method="updateuser">
+	        <result name="account_success">/tab/tab_add_user.jsp</result>
+            <result name="fail">/tab/tab_add_user.jsp</result>
+            <result name="input">/error.jsp</result>
+	</action>
+	
+	
+		
+		<!-- 写信 -->
+	<action name="writemail" class="com.wanggang.web.action.EmailAction" method="sendemail">	
+	        <result name="recipients_success">/tab/writemail.jsp</result>
+            <result name="input">/error.jsp</result>        
+	</action>
+	    <!-- 收信箱 -->
+    <action name="receiveMail" class="com.wanggang.web.action.EmailAction" method="reMail">	
+	        <result name="receiveMail_success">/tab/readmail.jsp</result>
+	        <result name="deletedEmail_success">/tab/yishanchu.jsp</result>		        
+            <result name="input">/error.jsp</result> 
+	</action>
+	    <!-- 已删除 -->
+    <action name="deletedEmail" class="com.wanggang.web.action.EmailAction" method="deletedEmail">	
+	        <result name="deletedEmail_success">/tab/yishanchu.jsp</result>	        
+            <result name="input">/error.jsp</result> 
+	</action>
+	   <!-- 草稿箱 -->
+	<action name="draftMail" class="com.wanggang.web.action.EmailAction" method="draftMail">	
+	        <result name="draftMail_success">/tab/draftmail.jsp</result>	        
+            <result name="input">/error.jsp</result> 
+	</action>
+	   <!-- 已发送 -->
+	<action name="transmittedMail" class="com.wanggang.web.action.EmailAction" method="transmittedMail">	
+	        <result name="transmittedMail_success">/tab/yifasong.jsp</result>	        
+            <result name="input">/error.jsp</result> 
+	</action>
+	   <!-- 垃圾箱 -->
+	<action name="rubbishMail" class="com.wanggang.web.action.EmailAction" method="rubbishMail">	
+	        <result name="rubbishMail_success">/tab/rubbishmail.jsp</result>	        
+            <result name="input">/error.jsp</result> 
+	</action>
+	
+	
+	
+	
+	
+	
+	    <!--判断用户请求-->
+    <action name="receiveMail" class="com.wanggang.web.action.EmailAction" method="reMail">	
+	        <result name="receiveMail_success">/tab/readmail.jsp</result>
+            <result name="input">/error.jsp</result>        
+	</action>
+	   <!-- 删除信件(移动到已删除) -->
+	<action name="deleteMail" class="com.wanggang.web.action.EmailAction" method="deleteMail">	
+	        <result name="receiveMail_success"  type="redirect">/tab/readmail.jsp</result>
+            <result name="input">/error.jsp</result>        
+	</action>
+	
+	
+	   <!-- 彻底删除(收件箱) -->
+	<action name="thoroughDelete" class="com.wanggang.web.action.EmailAction" method="thoroughDelete">	
+	        <result name="receiveMail_success">/tab/readmail.jsp</result>
+            <result name="input">/error.jsp</result>        
+	</action>
+	   <!-- 彻底删除(已删除) -->
+	<action name="thoroughDeleteY" class="com.wanggang.web.action.EmailAction" method="thoroughDeleteY">	
+	        <result name="thoroughDeleteY">/tab/yishanchu.jsp</result>
+            <result name="input">/error.jsp</result>        
+	</action>
+	   <!-- 彻底删除(草稿箱) -->
+	<action name="thoroughDeleteC" class="com.wanggang.web.action.EmailAction" method="thoroughDeleteC">	
+	        <result name="thoroughDeleteC">/tab/draftmail.jsp</result>
+            <result name="input">/error.jsp</result>        
+	</action>
+	   <!-- 彻底删除(已发送) -->
+	<action name="thoroughDeleteS" class="com.wanggang.web.action.EmailAction" method="thoroughDeleteS">	
+	        <result name="thoroughDeleteS">/tab/yifasong.jsp</result>
+            <result name="input">/error.jsp</result>        
+	</action>
+	   <!-- 彻底删除(垃圾箱) -->
+	<action name="thoroughDeleteR" class="com.wanggang.web.action.EmailAction" method="thoroughDeleteR">	
+	        <result name="thoroughDeleteR">/tab/rubbishmail.jsp</result>
+            <result name="input">/error.jsp</result>        
+	</action>
+	
+	
+	
+	
+	
+	   <!-- 标记为已读(收件箱) -->
+	<action name="badgeAlready" class="com.wanggang.web.action.EmailAction" method="badgeAlready">	
+	        <result name="receiveMail_success">/tab/readmail.jsp</result>
+            <result name="input">/error.jsp</result>        
+	</action>
+	   <!-- 标记为已读(已删除) -->
+	<action name="badgeAlreadyY" class="com.wanggang.web.action.EmailAction" method="badgeAlreadyY">	
+	        <result name="badgeAlreadyY">/tab/yishanchu.jsp</result>
+            <result name="input">/error.jsp</result>        
+	</action>	
+	   <!-- 标记为已读(垃圾箱) -->
+	<action name="badgeAlreadyL" class="com.wanggang.web.action.EmailAction" method="badgeAlreadyL">	
+	        <result name="badgeAlreadyL">/tab/rubbishmail.jsp</result>
+            <result name="input">/error.jsp</result>        
+	</action>
+	
+	
+	   <!-- 移动收件箱邮件到垃圾箱 -->
+	<action name="moveMail" class="com.wanggang.web.action.EmailAction" method="moveMail">	
+	        <result name="moveMail">/tab/readmail.jsp</result>
+            <result name="input">/error.jsp</result>        
+	</action>
+	   <!-- 移动垃圾箱邮件到收件箱 -->
+	<action name="moveMailR" class="com.wanggang.web.action.EmailAction" method="moveMailR">	
+	        <result name="moveMailR">/tab/rubbishmail.jsp</result>
+            <result name="input">/error.jsp</result>        
+	</action>
+	
+	
+	
+	   <!-- 存草稿 -->
+	<action name="savedraft" class="com.wanggang.web.action.EmailAction" method="savedraft">	
+	        <result name="savedraft">/tab/writemail.jsp</result>
+            <result name="input">/error.jsp</result>        
+	</action>	
+
+
+
+
+	</package>
+	
+	    <!--添加附件  --> 
+	<package name="struts2" extends="json-default"> 
+       <action name="EmailUploadAction" class="com.wanggang.web.action.EmailUploadAction"> 
+         <result type="json" name="success"> 
+         <param name="contentType">text/html</param> 
+         </result> 
+         <result type="json" name="error"> 
+         <param name="contentType">text/html</param> 
+         </result> 
+      </action> 
+   </package> 
+	
+	
+</struts>

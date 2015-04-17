@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+	
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+	
+	
+	<!-- 配置c3p0,连接数据库 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+		<property name="jdbcUrl"  value="jdbc:mysql://localhost:3306/mail"></property>
+		<property name="user"  value="root"></property>
+		<property name="password"  value="tiger"></property>
+		
+		<!-- 连接池最大连接数 -->
+		<property name="maxPoolSize" value="40"></property>
+		<!-- 连接池最小连接数 -->
+		<property name="minPoolSize" value="1"></property>	
+		<!-- 初始化连接数 -->
+		<property name="initialPoolSize" value="1"></property>
+		<!-- 连接的最大空闲时间,超时的连接将被丢弃,单位:"秒" -->
+		<property name="maxIdleTime" value="60"></property>
+		<!-- 没有连接可用时,等待连接的时间,单位:"毫秒" -->
+		<property name="checkoutTimeout" value="2000"></property>		
+	</bean>
+	
+	
+	
+	
+	
+	
+	<!-- 注入SessionFactory，这一步就完成了Hibernate与Spring的整合 -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="hibernateProperties">
+			<props>
+			    <!--Hibernare方言 -->			
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>							
+				
+				<prop key="hibernate.show_sql">true</prop>		
+		   </props>		
+		</property>		
+		<property name="mappingResources">
+			<list>
+				<value>com/wanggang/enity/Relational.hbm.xml</value>
+				<value>com/wanggang/enity/Users.hbm.xml</value>
+				<value>com/wanggang/enity/Position.hbm.xml</value>
+				<value>com/wanggang/enity/Department.hbm.xml</value>
+				<value>com/wanggang/enity/School.hbm.xml</value>
+	
+			</list>			
+		</property>
+	</bean>
+
+     <bean id="usersDao" class="com.wanggang.dao.UsersDaoImpl">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+
+	
+	<bean id="usersAction" class="com.wanggang.web.action.UsersAction" >
+		<property name="usersDao">
+			<ref bean="usersDao" />
+		</property>
+	</bean>
+			
+
+	
+	
+
+	
+</beans>

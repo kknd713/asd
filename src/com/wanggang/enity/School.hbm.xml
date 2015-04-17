@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+
+<hibernate-mapping>
+    <class name="com.wanggang.enity.School" table="school" >
+        <id name="schoolid" type="java.lang.Integer">
+            <column name="schoolid"  />
+            <generator class="increment" />
+        </id>
+        <property name="schoolname" type="java.lang.String">
+            <column name="schoolname" />
+        </property>
+        
+        
+        
+       <set name="department"  cascade="save-update" inverse="true">
+           <key column="schoolid"/>
+       <one-to-many class="com.wanggang.enity.Department"/>
+       </set> 
+    </class>
+</hibernate-mapping>

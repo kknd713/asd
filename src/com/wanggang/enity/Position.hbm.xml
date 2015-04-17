@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+
+<hibernate-mapping>
+    <class name="com.wanggang.enity.Position" table="Position" >
+    
+    
+        <id name="positionid" type="java.lang.Integer">
+            <column name="positionid" />
+            <generator class="increment" />
+        </id>
+             
+        <property name="positionname" type="java.lang.String">
+            <column name="positionname" />
+        </property>
+        
+        
+        <!-- 设置映射关系 -->       
+        <many-to-one name="department" class="com.wanggang.enity.Department">
+           <column name="departmentid"/>
+        </many-to-one>
+
+       <set name="users"  cascade="save-update" inverse="true">
+           <key column="positionid"/>
+       <one-to-many class="com.wanggang.enity.Users"/>
+       </set>  
+        
+    </class>
+</hibernate-mapping>

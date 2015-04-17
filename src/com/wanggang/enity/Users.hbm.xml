@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+   <class name="com.wanggang.enity.Users"  table="Users" >
+   
+        <id name="userid"  type="java.lang.Integer">
+            <column name="userid" />
+            <generator class="increment" />
+        </id>  
+        
+            
+        <property name="username" type="java.lang.String">
+            <column name="username" />
+        </property>  
+              
+        <property name="userpassword" type="java.lang.String">
+            <column name="userpassword" />
+        </property>  
+                      
+        <property name="zsname" type="java.lang.String">
+            <column name="zsname" />
+        </property> 
+         
+        <property name="sex" type="java.lang.Integer">
+            <column name="sex" />
+        </property>     
+           
+        <property name="safemail" type="java.lang.String">
+            <column name="safemail" />
+        </property>
+        
+        <property name="temporaryemail" type="java.lang.String">
+            <column name="temporaryemail" />
+        </property>    
+                   
+        <property name="condition1" type="java.lang.Integer">
+            <column name="condition1" />
+        </property> 
+        
+        <property name="permission" type="java.lang.String">
+            <column name="permission" />
+         </property>   
+         
+        <property name="signature" type="java.lang.String">
+            <column name="signature" />
+        </property> 
+                     
+        <!-- 设置映射关系 -->
+       <set name="relational" cascade="save-update" inverse="true" >
+           <key column="userid"/>
+           <one-to-many class="com.wanggang.enity.Relational"/>
+       </set>  
+
+       <many-to-one name="position" class="com.wanggang.enity.Position" >
+           <column name="positionid"/>
+       </many-to-one>
+      
+      
+
+        
+          
+    </class>
+</hibernate-mapping>
