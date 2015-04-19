@@ -64,9 +64,6 @@ function allmark1(){
                       <span>
                         <input type="button" id="delete2" value="彻底删除" onclick="deleteMail()"/>
                         </span>
-                      <span>
-                        <input type="button" id="" value="转发"/>
-                        </span>
                        <span style="margin-left:30%">
                          1/1页
                          <a href="">首页</a>

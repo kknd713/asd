@@ -6,29 +6,41 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>垃圾箱</title>
-<script type="text/javascript" src="../js/jquery-1.5.1.min.js" ></script>
+
+<style type="text/css">
+#RM{ cursor:pointer;}
+</style>
+
+<script type="text/javascript" src="js/jquery-1.5.1.min.js" ></script>
 <script type="text/javascript">
 <!--彻底删除-->
 function deleteMail(){
-	if($("input[name='messageUID']").attr("checked")==true){
+	$(":checkbox[name='messageUID']").each(function(){
+		if(this.checked){
  	document.getElementById("my").action ="thoroughDeleteR";
 	document.forms[0].submit(); 
-	}
+		}
+	})
 	}
 	
 <!--标记为已读-->
 function allmark1(){
-	if($("input[name='messageUID']").attr("checked")==true){
+	$(":checkbox[name='messageUID']").each(function(){
+		if(this.checked){
  	document.getElementById("my").action ="badgeAlreadyL";
 	document.forms[0].submit(); 
-	}}
+		}
+	})
+	}
 <!--移动邮件到收件箱-->
 function moveEmail(){
-	if($("input[name='messageUID']").attr("checked")==true){
+	$(":checkbox[name='messageUID']").each(function(){
+		if(this.checked){
 		document.getElementById("my").action ="moveMailR";
 		document.forms[0].submit(); 
-    }
-}
+		}
+	})
+	}
 	
 	
 
@@ -49,6 +61,15 @@ function moveEmail(){
     $("tr[id='RM']").live("mouseout",function(){
             this.style.background="none";
 	     })	  
+	     
+	 	 $("td[id='RM']").live("click", function(){
+			var e=$(this);
+	 		var ip=e.find('input')	 		
+		    var messageuid=ip.val()
+		    $("input[id='message']").val(messageuid)
+		    document.forms[1].submit();
+	})    
+	     
 		 
    }) 
    
@@ -64,9 +85,6 @@ function moveEmail(){
                     </p>
                     <span>
                         <input type="button" name="delete" value="彻底删除" onclick="deleteMail()"/>
-                        </span>
-                      <span>
-                        <input type="button" name="delete" value="转发"/>
                         </span>
                        <span>
                          <input type="button" name="move" value="这不是垃圾邮件" onclick="moveEmail()"/>
@@ -86,7 +104,7 @@ function moveEmail(){
                 <table width="100%" border="1" cellspacing="0" cellpadding="0">               
 				<tr>
                    <td align="center" colspan="2"       border ="0" width="5%"><input type="checkbox" name="love" value="new" /></td>
-                   <td align="center" colspan="2"     border ="0" width="5%"><img  width="50%"src="../images/youjian.gif"/></td>
+                   <td align="center" colspan="2"     border ="0" width="5%"><img  width="50%"src="images/youjian.gif"/></td>
                    <td align="center" colspan="2"     border ="0" width="40%">发件人</td>
                    <td align="center" colspan="2"     border ="0" width="40%"><nobr>主题</nobr></td>
                    <td align="center" colspan="2"     border ="0" width="10%">时间</td>
@@ -97,18 +115,21 @@ function moveEmail(){
 				<tr id="RM">                   
                    <td align="center" colspan="2"     border ="0" width="5%"><input type="checkbox" name="messageUID" value='<s:property value='#mail.messageUID' />' /></td>
                    <s:if test="#mail.read==false">
-                   <td align="center" colspan="2"   border ="0" width="5%"><img  name="biao" width="30%"src="../images/weidu.gif"/></td>
+                   <td align="center" colspan="2"   border ="0" width="5%"><img  name="biao" width="30%"src="images/weidu.gif"/></td>
                    </s:if>                 
                     <s:else>
-                    <td align="center" colspan="2"   border ="0" width="5%"><img  name="biao" width="30%" src="../images/yidu.gif"/></td>
+                    <td align="center" colspan="2"   border ="0" width="5%"><img  name="biao" width="30%" src="images/yidu.gif"/></td>
                     </s:else>
-                   <td align="left" colspan="2"     border ="0" width="40%">&nbsp;&nbsp;&nbsp;<s:property value="#mail.from" /></td>
-                   <td align="left" colspan="2"     border ="0" width="40%">&nbsp;&nbsp;&nbsp;<nobr><s:property value="#mail.subject"/></nobr></td>
-                   <td align="center" colspan="2"   border ="0" width="10%"><s:date name="#mail.date" format="yyyy-MM-dd"/></td>			   
+                   <td  id="RM"  align="left" colspan="2"     border ="0" width="40%">&nbsp;&nbsp;&nbsp;<s:property value="#mail.from" /><input type="hidden" value='<s:property value='#mail.messageUID' />' /></td>
+                   <td  id="RM"  align="left" colspan="2"     border ="0" width="40%">&nbsp;&nbsp;&nbsp;<s:property value="#mail.subject"/><input type="hidden" value='<s:property value='#mail.messageUID' />' /></td>
+                   <td  id="RM"   align="center" colspan="2"   border ="0" width="10%"><s:date name="#mail.date" format="yyyy-MM-dd"/><input type="hidden" value='<s:property value='#mail.messageUID' />' /></td>			   
 			   </tr>
                </s:iterator>
                           
 		</table>
+</form>
+<form action="getmailBeanL" method="post">
+<input type="hidden" id="message" name="messageUID" value="" />
 </form>
 </div>
 </body>

@@ -47,30 +47,6 @@ a:active {
 </style>
 
 <script type="text/jscript">
- <!--写信-->
-		function management1(){
-				document.getElementById("wang").src ="../tab/writemail.jsp";
-			}
-		<!--收信-->	
-		function management2(){
-			document.getElementById("wang").src = "receiveMail.action";
-			}				
-        <!--草稿箱-->	
-		function management3(){
-				document.getElementById("wang").src = "draftMail.action";
-			}
-		<!--已发送-->
-		function management4(){
-				document.getElementById("wang").src = "transmittedMail.action";
-			}
-		<!--已删除-->	
-		function management5(){
-				document.getElementById("wang").src = "deletedEmail.action";
-			}
-		<!--垃圾箱-->	
-		function management6(){
-				document.getElementById("wang").src = "rubbishMail.action";
-			}
 		<!--添加用户-->	
 		function management7(){
 				document.getElementById("wang").src = "../tab/tab_add_user.jsp";
@@ -127,7 +103,7 @@ a:active {
                     <td width="16%" height="25"><div align="center"><img src="../images/left.gif" width="10" height="10" /></div></td>
                     <td width="84%" height="23"><table width="95%" border="0" cellspacing="0" cellpadding="0">
                         <tr>
-                          <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3"><a href="javascript:management1()" target="mainFrame">写信</a></span></td>
+                          <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3"><a href="http://localhost:8080/Demo1/tab/writemail.jsp" target="mainFrame">写信</a></span></td>
                         </tr>
                     </table></td>
                   </tr>
@@ -135,7 +111,7 @@ a:active {
                     <td height="23"><div align="center"><img src="../images/left.gif" width="10" height="10" /></div></td>
                     <td height="23"><table width="95%" border="0" cellspacing="0" cellpadding="0">
                         <tr>
-                          <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3"><a href="javascript:management2()" target="mainFrame">收信</a></span></td>
+                          <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3"><a href="http://localhost:8080/Demo1/receiveMail.action" target="mainFrame">收信</a></span></td>
                         </tr>
                     </table></td>
                   </tr>
@@ -143,7 +119,7 @@ a:active {
                     <td height="23"><div align="center"><img src="../images/left.gif" width="10" height="10" /></div></td>
                     <td height="23"><table width="95%" border="0" cellspacing="0" cellpadding="0">
                         <tr>
-                          <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3"><a href="javascript:management2()" target="mainFrame">收信箱</a></span></td>
+                          <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3"><a href="http://localhost:8080/Demo1/receiveMail.action" target="mainFrame">收信箱</a></span></td>
                         </tr>
                     </table></td>
                   </tr>
@@ -151,7 +127,7 @@ a:active {
                     <td height="23"><div align="center"><img src="../images/left.gif" width="10" height="10" /></div></td>
                     <td height="23"><table width="105" border="0" cellspacing="0" cellpadding="0" height="22">
                         <tr>
-                          <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3"><a href="javascript:management3()" target="mainFrame">草稿箱</a></span></td>
+                          <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3"><a href="http://localhost:8080/Demo1/tab/draftMail.action" target="mainFrame">草稿箱</a></span></td>
                         </tr>
                     </table></td>
                   </tr>
@@ -159,7 +135,7 @@ a:active {
                     <td height="23"><div align="center"><img src="../images/left.gif" width="10" height="10" /></div></td>
                     <td height="23"><table width="105" border="0" cellspacing="0" cellpadding="0" height="22">
                         <tr>
-                          <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3"><a href="javascript:management4()" target="mainFrame">已发送</a></span></td>
+                          <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3"><a href="http://localhost:8080/Demo1/tab/transmittedMail.action" target="mainFrame">已发送</a></span></td>
                         </tr>
                     </table></td>
                   </tr>
@@ -181,7 +157,7 @@ a:active {
                           <td width="16%" height="25"><div align="center"><img src="../images/left.gif" width="10" height="10" /></div></td>
                           <td width="84%" height="23"><table width="95%" border="0" cellspacing="0" cellpadding="0">
                               <tr>
-                                <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3"><a id="dd" href="javascript:management5()" target="mainFrame">已删除</a></span></td>
+                                <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3"><a  href="http://localhost:8080/Demo1/deletedEmail.action" target="mainFrame">已删除</a></span></td>
                               </tr>
                           </table></td>
                         </tr>
@@ -189,7 +165,7 @@ a:active {
                           <td height="23"><div align="center"><img src="../images/left.gif" width="10" height="10" /></div></td>
                           <td height="23"><table width="95%" border="0" cellspacing="0" cellpadding="0">
                               <tr>
-                                <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3"><a href="javascript:management6()" target="mainFrame">垃圾箱</a></span></td>
+                                <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3"><a href="http://localhost:8080/Demo1/rubbishMail.action" target="mainFrame">垃圾箱</a></span></td>
                               </tr>
                           </table></td>
                         </tr>                   
@@ -211,11 +187,6 @@ a:active {
       <jsp:include page="left-user.jsp"/>
     </s:else>
 </table>
-</div>
-
-
-<div style="float:right; width:80%; height:100%; text-align:left;  margin-right:110px; padding:0;">
-<iframe name="I2" id="wang" height="100%"  width="100%" src="" border="0" frameborder="0" scrolling="no"></iframe>
 </div>
 
 </body>

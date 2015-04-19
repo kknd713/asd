@@ -5,6 +5,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>写信</title>
+<script type="text/javascript" charset="utf-8" src="../js/BD/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/BD/ueditor.all.min.js"> </script>
+<script type="text/javascript" charset="utf-8" src="../js/BD/lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript">
+    var ue = UE.getEditor('editor');
+</script>
+<script type="text/javascript" src="../js/BD/third-party/jquery-1.10.2.min.js"></script>
 
 
 
@@ -14,7 +21,6 @@
 <script type="text/javascript" src="../js/ext-3.3.1/ext-all.js"></script>
 <script type="text/javascript" src="../js/jquery-1.5.1.min.js"></script>
 <script type="text/javascript" src="../js/ajaxfileupload.js"></script>
-
 
 <style type="text/css">
 .body1{ width:auto; height:auto;}
@@ -38,9 +44,7 @@ td{ margin:0; padding:0}
 #title6{width:70%;heigh:25px}
 tr{ margin-bottom:4px;}
 </style>
-
-
-
+	
 <script type="text/jscript">
 <!--上传附件-->
 function ajaxFileUpload(){
@@ -89,11 +93,11 @@ $(document).ready(function(){
 		$("tr[id='tianjia']").hide();
 		$("tr[id='fenbie']").hide();
 	 $("input[id='caosong']").live("click",function(){
-		 if($("input[id='caosong']").attr("value")=="抄送"){
+		 if($("input[id='caosong']").attr("value")=="添加抄送"){
 		  $("input[id='caosong']").attr("value", "取消抄送")
           $("tr[id='caosong']").show();
 		 }else{
-		  $("input[id='caosong']").attr("value", "抄送")
+		  $("input[id='caosong']").attr("value", "添加抄送")
           $("tr[id='caosong']").hide();			 
 			 }		  
 	 })
@@ -193,7 +197,7 @@ $("input[id='save2']").live("click",function(){
 
 <body>
 
-<div id="xie" style="overflow:scroll;height:500px;">
+<div id="xie">
 
 <form id="myForm" name="myForm" action="writemail" method="post" enctype="multipart/form-data">      
 
@@ -208,12 +212,12 @@ $("input[id='save2']").live("click",function(){
                     <td align="left" colspan="2" name="bao"><input type="text" name="mailBean.cc" id="title2"/> </td>
                 </tr>
                 <tr id="tianjia">
-                    <td  width="5%" height="31" align="right" name="biao">添加密送：</td>
+                    <td  width="5%" height="31" align="right" name="biao">密送：</td>
                     <td align="left" colspan="2" name="bao"><input type="text" name="mailBean.bcc" id="title3"/></td>
                 </tr>               				
                 <tr>
                     <td align="left" colspan="2" style=" padding-left:16%">
-                       <span><input type="button"  id="caosong" name="caosong" value="抄送"  /></span>
+                       <span><input type="button"  id="caosong" name="caosong" value="添加抄送"  /></span>
                        <span><input type="button"  id="tianjia"  name="tianjia"  value="添加密送"  /></span>                                    
                     </td>
 				</tr>                
@@ -243,8 +247,8 @@ $("input[id='save2']").live("click",function(){
 			   </tr>			                      		   
 				<tr >
 					<td align="right" style=" float:right; padding-top:30px">正文：</td>
-                    <td align="left" colspan="2"><textarea cols="60" rows="20" name="mailBean.content" id="content1"></textarea></td>
-				</tr>
+                    <td align="left" colspan="2"><script id="editor" name="mailBean.content" type="text/plain" style="width:600px;height:300px;"></script></td>
+				</tr> 
 				<tr>
 					<td align="left" colspan="2" style=" padding-left:16%"> 
                         <span><input type="submit"  id="save1" value="发送" onclick="return sendemail();" /></span>

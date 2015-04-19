@@ -36,7 +36,6 @@ public class EmailAction extends ActionSupport {
 	private String upload;
     private MailInfo mailInfo;
     private long[] messageUID;
-
     
     private ReceiveMail receiveMail=null;
 
@@ -86,7 +85,7 @@ public class EmailAction extends ActionSupport {
 			mailBean.setUsername(i);
 			mailBean.setPassword(user.getUserpassword());
 			mailBean.setFrom(user.getUsername());			
-			if(upload.length()>0){
+			if(upload!=null&&upload.length()>0){
 				   mailBean.setFile(path+"/"+getUpload());
 				}
 			mailBean.initSmtpAuth();
@@ -248,14 +247,14 @@ public class EmailAction extends ActionSupport {
       * 移动收件箱邮件到垃圾箱
      * @throws MessagingException 
       */
-     public String moveMail() throws MessagingException{	 
+     public String moveMail() throws Exception{	 
     	 receiveMail =validateUser();
     	 receiveMail.moveMessage(MailConstant.FOLDER_INBOX, MailConstant.FOLDER_SPAM, messageUID);
     	 receiveMail.close();// 关闭连接	 
     	 return "moveMail";
      }
      //移动垃圾邮件到收件箱
-     public String moveMailR() throws MessagingException{	 
+     public String moveMailR() throws Exception{	 
     	 receiveMail =validateUser();
     	 receiveMail.moveMessage(MailConstant.FOLDER_SPAM, MailConstant.FOLDER_INBOX, messageUID);
     	 receiveMail.close();// 关闭连接	 
@@ -269,6 +268,55 @@ public class EmailAction extends ActionSupport {
      
      
      
+     /**
+      *根据UID查看指定邮件内容 
+      * @throws Exception 
+      *
+      */
+     public void getmailBean(String fol,long emailUid) throws Exception{
+    	receiveMail =validateUser();
+    	receiveMail.openFolder(fol,Folder.READ_WRITE); 
+    	mailBean = receiveMail.getMessageByUID(emailUid);
+ 		receiveMail.close();		
+ 	}   
+     
+    //查看邮件内容(收件箱)
+     public String getmailBeanR() throws Exception{
+    	 getmailBean(MailConstant.FOLDER_INBOX,messageUID[0]);
+     	return "getmailBeanR";		
+    }
+   //查看邮件内容(已删除)
+     public String getmailBeanY() throws Exception{
+    	 getmailBean(MailConstant.FOLDER_DELETE,messageUID[0]);
+     	return "getmailBeanY";		
+    }
+   //查看邮件内容(垃圾箱)
+     public String getmailBeanL() throws Exception{
+    	 getmailBean(MailConstant.FOLDER_SPAM,messageUID[0]);
+     	return "getmailBeanL";		
+    }
+   
+     
+     /**
+      * 转发邮件
+     * @throws Exception 
+      * 
+      */
+     //转发(收件箱)
+     public String transmitMailR() throws Exception{
+    	getmailBean(MailConstant.FOLDER_INBOX,messageUID[0]); 
+    	 return "transmitMailR";
+     }
+     //转发(已删除)
+     public String transmitMailY() throws Exception{
+     	getmailBean(MailConstant.FOLDER_DELETE,messageUID[0]); 
+     	 return "transmitMailY";
+      }
+     //转发(垃圾箱)
+     public String transmitMailL() throws Exception{
+     	getmailBean(MailConstant.FOLDER_SPAM,messageUID[0]); 
+     	 return "transmitMailL";
+      }
      
      
      
@@ -280,9 +328,7 @@ public class EmailAction extends ActionSupport {
 	 * @throws MessagingException 
 	 * @throws UnsupportedEncodingException 
 	  */
-	 public String savedraft() throws MessagingException, UnsupportedEncodingException{
-		
-		 
+	 public String savedraft() throws MessagingException, UnsupportedEncodingException{ 
 		 return "savedraft";
 	 }
      

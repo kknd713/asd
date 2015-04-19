@@ -9,9 +9,13 @@
 
 <frameset rows="98,*,8" frameborder="no" border="0" framespacing="0">
   <frame src="top.jsp" name="topFrame" scrolling="no" noresize="noresize" id="topFrame" />
-  <frame src="center/center-welcome.jsp" name="mainFrame" id="mainFrame" />
+  <frameset cols="165,*">
+  	<frame src="center/center-welcome.jsp" name="left" id="left" />
+  	<frame src="receiveMail.action" name="mainFrame" id="mainFrame" />
+  </frameset>
   <frame src="down.jsp" name="bottomFrame" scrolling="no" noresize="noresize" id="bottomFrame" />
 </frameset>
-<noframes><body>
+<noframes>
+<body>
 </body>
 </noframes></html>

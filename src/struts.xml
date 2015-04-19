@@ -150,6 +150,46 @@
 	
 	
 	
+	   <!-- 查看邮件内容(收件箱) --> 
+	<action name="getmailBeanR" class="com.wanggang.web.action.EmailAction" method="getmailBeanR">	
+	        <result name="getmailBeanR">/tab/cotent.jsp</result>
+            <result name="input">/error.jsp</result>        
+	</action>
+	<!-- 查看邮件内容(已删除) --> 
+	<action name="getmailBeanY" class="com.wanggang.web.action.EmailAction" method="getmailBeanY">	
+	        <result name="getmailBeanY">/tab/cotent.jsp</result>
+            <result name="input">/error.jsp</result>        
+	</action>
+	<!-- 查看邮件内容(垃圾箱) --> 
+	<action name="getmailBeanL" class="com.wanggang.web.action.EmailAction" method="getmailBeanL">	
+	        <result name="getmailBeanL">/tab/cotent.jsp</result>
+            <result name="input">/error.jsp</result>        
+	</action>
+	
+	
+	<!-- 转发(收件箱) --> 
+	<action name="transmitMailR" class="com.wanggang.web.action.EmailAction" method="transmitMailR">	
+	        <result name="transmitMailR">/tab/writemail-transmit.jsp</result>
+            <result name="input">/error.jsp</result>        
+	</action>
+	<!-- 转发(已删除箱) --> 
+	<action name="transmitMailY" class="com.wanggang.web.action.EmailAction" method="transmitMailY">	
+	        <result name="transmitMailY">/tab/writemail-transmit.jsp</result>
+            <result name="input">/error.jsp</result>        
+	</action>
+	<!-- 转发(垃圾箱) --> 
+	<action name="transmitMailL" class="com.wanggang.web.action.EmailAction" method="transmitMailL">	
+	        <result name="transmitMailL">/tab/writemail-transmit.jsp</result>
+            <result name="input">/error.jsp</result>        
+	</action>
+	
+	
+	
+	
+	
+	
+	
+	
 	   <!-- 存草稿 -->
 	<action name="savedraft" class="com.wanggang.web.action.EmailAction" method="savedraft">	
 	        <result name="savedraft">/tab/writemail.jsp</result>

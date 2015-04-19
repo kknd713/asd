@@ -11,8 +11,8 @@
 
 
 <style type="text/css">
-#ding{width: 100%;height:300px; margin:0; padding:0; background:url(images/denglujiemian.gif) repeat-y  center;}
-#xia{width: 100%;height:330px; margin:0; padding:0; background: url(images/xia.gif) repeat-y  center;}
+#ding{width: 100%;height:300px; margin:0; padding:0; background:url(images/denglujiemian.gif) repeat-x  center;}
+#xia{width: 100%;height:330px; margin:0; padding:0; background: url(images/xia.gif) repeat center;}
 body{ margin:0; padding:0;}
 #zhong { color:#000; background-image:url(images/zhong.gif)}
 
