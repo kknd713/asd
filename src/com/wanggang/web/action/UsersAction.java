@@ -102,11 +102,6 @@ public class UsersAction extends ActionSupport {
      */
 	public String activationCode(){
 		
-		
-		
-		
-		
-		
 		return null;
 	}
 	/**
