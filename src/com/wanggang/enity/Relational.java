@@ -31,16 +31,15 @@ public class Relational {
 	public void setUsers(Users users) {
 		this.users = users;
 	}
-	
-	
-
-	
-
-
-	
-	
-	
-	
+	public Relational(int id, Users friend, Users users) {
+		super();
+		this.id = id;
+		this.friend = friend;
+		this.users = users;
+	}
+	public Relational() {
+		super();
+	}
 	
 	
 }

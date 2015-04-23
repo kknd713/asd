@@ -1,5 +1,9 @@
 <%@ page contentType="text/html; charset=utf-8" language="java" import="java.sql.*" errorPage="" %>
 <%@taglib uri="/struts-tags" prefix="s" %>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -11,7 +15,7 @@
 </style>
 
 
-<script type="text/javascript" src="js/jquery-1.5.1.min.js" ></script>
+<script type="text/javascript" src="<%=basePath %>js/jquery-1.5.1.min.js" ></script>
 <script type="text/javascript">
 <!--彻底删除-->
 function deleteMail(){
@@ -80,13 +84,9 @@ $(document).ready(function(){
 		    $("input[id='message']").val(messageuid)
 		    document.forms[1].submit();
 	})
-
-
 	 
   }) 
-   
-  
-		  
+   		  
 
 </script>
 
@@ -116,17 +116,40 @@ $(document).ready(function(){
                         </span>
 
                         <span style="margin-left:30%">
-                         1/1页
-                         <a href="">首页</a>
-                         <a href="">上一页</a>
-                         <a href="">下一页</a>
-                         <a href="">末页</a>
-                        </span>                                           
+                         <s:property value="index"/>/
+                        <s:if test="totalPageCount==0">1</s:if>
+                        <s:else><s:property value="totalPageCount"/></s:else>页                     
+                         <s:if test="index>1"> 
+                         <a href="receiveMail.action?index=1">首页</a>
+                        </s:if>                     
+                        <s:else>
+                        <font color='#666666'>首页</font>
+                        </s:else>
+                        <s:if test="index>1"> 
+                         <a href="receiveMail.action?index=<s:property value='index-1'/>">上一页</a>
+                        </s:if>                     
+                        <s:else>
+                        <font color='#666666'>上一页</font>
+                        </s:else>
+                        <s:if test="index<totalPageCount">
+                         <a href="receiveMail.action?index=<s:property value='index+1'/>">下一页</a>
+                        </s:if>
+                        <s:else>
+                        <font color='#666666'>下一页</font>
+                        </s:else>
+                        <s:if test="totalPageCount > 0 && index != totalPageCount">                      
+                         <a href="receiveMail.action?index=<s:property value='totalPageCount'/>">末页</a> 
+                        </s:if>
+                        <s:else>
+                        <font color='#666666'>末页</font>
+                        </s:else>                   
+                        </span> 
+                                                              
                     </p>
                 <table width="100%" border="1" cellspacing="0" cellpadding="0">               
 				<tr>
                    <td align="center" colspan="2"       border ="0" width="5%"><input type="checkbox" name="love" value="new" /></td>
-                   <td align="center" colspan="2"     border ="0" width="5%"><img  width="50%"src="images/youjian.gif"/></td>
+                   <td align="center" colspan="2"     border ="0" width="5%"><img  width="50%"src="<%=basePath %>images/youjian.gif"/></td>
                    <td align="center" colspan="2"     border ="0" width="40%">发件人</td>
                    <td align="center" colspan="2"     border ="0" width="40%">主题</td>
                    <td align="center" colspan="2"     border ="0" width="10%">时间</td> 
@@ -138,10 +161,10 @@ $(document).ready(function(){
 				<tr name="RM">             
                    <td  align="center" colspan="2"     border ="0" width="5%"><input type="checkbox" name="messageUID" value='<s:property value='#mail.messageUID' />' /></td>                   
                     <s:if test="#mail.read==false">
-                   <td  align="center" colspan="2"   border ="0" width="5%"><img  name="biao" width="30%"src="images/weidu.gif"/></td>
+                   <td  align="center" colspan="2"   border ="0" width="5%"><img  name="biao" width="30%"src="<%=basePath %>images/weidu.gif"/></td>
                     </s:if>                 
                     <s:else>
-                   <td  align="center" colspan="2"   border ="0" width="5%"><img  name="biao" width="30%" src="images/yidu.gif"/></td>
+                   <td  align="center" colspan="2"   border ="0" width="5%"><img  name="biao" width="30%" src="<%=basePath %>images/yidu.gif"/></td>
                     </s:else>
                    <td  id="RM"  align="left" colspan="2"     border ="0" width="40%">&nbsp;&nbsp;&nbsp;<s:property value="#mail.from" /><input type="hidden" value='<s:property value='#mail.messageUID' />' /></td>
                    <td  id="RM"  align="left" colspan="2"     border ="0" width="40%">&nbsp;&nbsp;&nbsp;<s:property value="#mail.subject"/><input type="hidden" value='<s:property value='#mail.messageUID' />' /></td>

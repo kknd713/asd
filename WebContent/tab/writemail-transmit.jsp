@@ -1,26 +1,30 @@
 ﻿<%@ page contentType="text/html; charset=utf-8" language="java" import="java.sql.*" errorPage="" %>
 <%@taglib uri="/struts-tags" prefix="s" %>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>写信</title>
-<script type="text/javascript" charset="utf-8" src="js/BD/ueditor.config.js"></script>
-<script type="text/javascript" charset="utf-8" src="js/BD/ueditor.all.min.js"> </script>
-<script type="text/javascript" charset="utf-8" src="js/BD/lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%=basePath %>js/BD/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%=basePath %>js/BD/ueditor.all.min.js"> </script>
+<script type="text/javascript" charset="utf-8" src="<%=basePath %>js/BD/lang/zh-cn/zh-cn.js"></script>
+
+<script type="text/javascript" src="<%=basePath %>js/BD/third-party/jquery-1.10.2.min.js"></script>
 <script type="text/javascript">
-    var ue = UE.getEditor('editor');  
+var ue = UE.getEditor('editor');
 </script>
-<script type="text/javascript" src="js/BD/third-party/jquery-1.10.2.min.js"></script>
 
 
 
-
-<link type="text/css" rel="stylesheet" href="js/ext-3.3.1/resources/css/ext-all.css"/>
-<script type="text/jscript" src="js/ext-3.3.1/adapter/ext/ext-base.js"></script>
-<script type="text/javascript" src="js/ext-3.3.1/ext-all.js"></script>
-<script type="text/javascript" src="js/jquery-1.5.1.min.js"></script>
-<script type="text/javascript" src="js/ajaxfileupload.js"></script>
+<link type="text/css" rel="stylesheet" href="<%=basePath %>js/ext-3.3.1/resources/css/ext-all.css"/>
+<script type="text/jscript" src="<%=basePath %>js/ext-3.3.1/adapter/ext/ext-base.js"></script>
+<script type="text/javascript" src="<%=basePath %>js/ext-3.3.1/ext-all.js"></script>
+<script type="text/javascript" src="<%=basePath %>js/jquery-1.5.1.min.js"></script>
+<script type="text/javascript" src="<%=basePath %>js/ajaxfileupload.js"></script>
 
 <style type="text/css">
 .body1{ width:auto; height:auto;}
@@ -84,6 +88,16 @@ $(document).ready(function(){
 			 var io =this.title;
 		   $("input[id='title1']").attr("value",io);
 			})
+			
+
+	
+   	  $("#content").hide();
+   	  var i=UE.utils.html($("#content").html())
+	  $("#content").html(i)
+	  UE.getEditor('editor').ready(function(){
+        UE.getEditor('editor').setContent(i);
+       })	
+			
    })
 					
 <!--实现发送功能--!>	
@@ -141,9 +155,15 @@ $("input[id='save2']").live("click",function(){
 	
 	})
 	
+
+	
+	
 })
+    
+
 		
 </script>
+
 </head>
 
 <body>
@@ -184,21 +204,13 @@ $("input[id='save2']").live("click",function(){
 			   </tr>			                      		   
 				<tr >
 					<td align="right" style=" float:right; padding-top:30px">正文：</td>
-                    <td align="left" colspan="2"><script id="editor" name="mailBean.content" type="text/plain" style="width:600px;height:300px;">
-                    <br/> <br/> <br/> <br/>   
-                    <p>------------------ 原始邮件 ------------------</p>  
-                    <p>发件人:<s:property value='mailBean.from'/></p>
-                    <p>发件时间:<s:date name="mailBean.date" format="yyyy-MM-dd HH:mm:ss"/></p>
-                    <p>收件人:<s:property value='mailBean.to'/></p>
-                    <p>主题:<s:property value='mailBean.subject'/></p><br/>
-                    <p><s:property value='mailBean.content'/></p>
+                    <td align="left" colspan="2"><script id="editor" name="mailBean.content" type="text/plain" style="width:600px;height:300px;">  
                     </script>
                     </td>
 				</tr> 
 				<tr>
 					<td align="left" colspan="2" style=" padding-left:16%"> 
-                        <span><input type="submit"  id="save1" value="发送" onclick="return sendemail();" /></span>
-                        <span><input type="button"  id="save2" value="定时发送"   /></span>               
+                        <span><input type="submit"  id="save1" value="发送" onclick="return sendemail();" /></span>              
 				    </td>
                 </tr>
                 <tr>
@@ -208,9 +220,19 @@ $("input[id='save2']").live("click",function(){
                 
 			</table>         			
 		</div>
+
  </form>  
- </div>    
- 
+ </div>
+     
+<div id="content">
+<p>------------------ 原始邮件 ------------------</p>
+<p>发件人:<s:property value="mailBean.from"/></p>
+<p>时间:<s:date name="mailBean.date" format="yyyy-MM-dd HH:mm:ss"/></p>
+<p>主题:<s:property value="mailBean.subject" /></p>
+<p>收件人:<s:property value="mailBean.to"/></p>
+<s:property value="mailBean.content"/>
+<p></p>
+</div>
 
 <div id="hello">
 <fieldset>

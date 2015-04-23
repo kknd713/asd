@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-   <class name="com.wanggang.enity.Users"  table="Users" >
+   <class name="com.wanggang.enity.Users"  table="users" >
    
         <id name="userid"  type="java.lang.Integer">
             <column name="userid" />
@@ -46,9 +46,17 @@
         <property name="signature" type="java.lang.String">
             <column name="signature" />
         </property> 
+        
+        <property name="code" type="java.lang.String">
+            <column name="code" />
+        </property> 
+        <property name="createTime" type="java.lang.Integer">
+            <column name="createTime" />
+        </property> 
+                     
                      
         <!-- 设置映射关系 -->
-       <set name="relational" cascade="save-update" inverse="true" >
+       <set name="relational"  inverse="true" >
            <key column="userid"/>
            <one-to-many class="com.wanggang.enity.Relational"/>
        </set>  

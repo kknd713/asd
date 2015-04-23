@@ -170,18 +170,18 @@ public class SendMail {
 							+ " <");
 		}
 		matcher.appendTail(sb);
-		System.out.println("===========================编码发件人:" + sb.toString());
 		return sb.toString();
 	}
 
 	/**
 	 * 发送邮件
 	 */
-	public void sendMail() throws AddressException, MessagingException,
+	public MimeMessage sendMail() throws AddressException, MessagingException,
 			UnsupportedEncodingException {
 		MimeMessage message = createMimeMessage();
 		// 发送消息
 		Transport.send(message);
+		return message;
 	}
 
 	/**

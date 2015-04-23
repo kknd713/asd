@@ -20,6 +20,10 @@ public class Users {
 	private int condition1;        //邮箱激活状态
 	private String permission;     //权限
 	private String signature;      //签名档
+	private String code;           //验证码
+	private int createTime;        //创建时间
+	
+	
 	
 	private Position position;     //将职位作为属性创建
 	private Set relational =new HashSet();
@@ -97,7 +101,18 @@ public class Users {
 	public void setRelational(Set relational) {
 		this.relational = relational;
 	}
-	
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
+	public int getCreateTime() {
+		return createTime;
+	}
+	public void setCreateTime(int createTime) {
+		this.createTime = createTime;
+	}
 	
 	
 	

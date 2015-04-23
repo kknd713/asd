@@ -11,7 +11,7 @@
         </id>
 
         
-     <many-to-one name="friend" class="com.wanggang.enity.Users">
+     <many-to-one name="friend" class="com.wanggang.enity.Users" >
            <column name="friendid"/>
      </many-to-one>      
                 

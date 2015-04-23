@@ -1,13 +1,11 @@
 package com.wanggang.web.action;
 
 
+
+import java.io.File;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
-import javax.mail.Flags;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -19,24 +17,50 @@ import org.apache.struts2.ServletActionContext;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.sun.mail.imap.IMAPFolder;
+import com.wanggang.dao.UsersDao;
 import com.wanggang.enity.Users;
 import com.wanggang.service.mail.MailBean;
 import com.wanggang.service.mail.MailConstant;
+import com.wanggang.service.mail.Page;
 import com.wanggang.service.mail.receive.Flag;
 import com.wanggang.service.mail.receive.MailInfo;
 import com.wanggang.service.mail.receive.ReceiveMail;
-import com.wanggang.service.mail.receive.UserReceiveMailService;
 import com.wanggang.service.mail.send.SendMail;
 
 @SuppressWarnings("serial")
 public class EmailAction extends ActionSupport {
-		
+	
+	private UsersDao usersDao;
 	private Map<String,Object> session = null;
 	private MailBean mailBean;
 	private String upload;
     private MailInfo mailInfo;
     private long[] messageUID;
+    private int index=1;        //当前页号
+    private int totalPageCount; //页面显示的总页数
+    private String path = ServletActionContext.getServletContext().getRealPath("/upload");
+    private String downloadPath;
+    private String fileName;
     
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+	public String getDownloadPath() {
+		return downloadPath;
+	}
+	public void setDownloadPath(String downloadPath) {
+		this.downloadPath = downloadPath;
+	}
+
+	public UsersDao getUsersDao() {
+		return usersDao;
+	}
+	public void setUsersDao(UsersDao usersDao) {
+		this.usersDao = usersDao;
+	}
     private ReceiveMail receiveMail=null;
 
 	public long[] getMessageUID() {
@@ -64,6 +88,32 @@ public class EmailAction extends ActionSupport {
 		this.mailBean = mailBean;
 	}
 
+	public int getIndex() {
+		return index;
+	}
+	public void setIndex(int index) {
+		this.index = index;
+	}
+	public int getTotalPageCount() {
+		return totalPageCount;
+	}
+	public void setTotalPageCount(int totalPageCount) {
+		this.totalPageCount = totalPageCount;
+	}
+	
+	
+	/**
+	 * 加载写信页面
+	 */
+	public String loadwritemail(){
+		session = ActionContext.getContext().getSession();
+		Users user=(Users)session.get("user");
+		Users users=usersDao.selectname(user.getUsername());
+		session.remove("user");
+		session.put("user",users);
+		return SUCCESS;
+	}
+	
 	
 	/**
 	 * 
@@ -74,7 +124,6 @@ public class EmailAction extends ActionSupport {
      *
 	 */
 	public String sendemail() throws AddressException, UnsupportedEncodingException, MessagingException{
-		String path = ServletActionContext.getServletContext().getRealPath("/upload");
 		//获取当前登录用户
 		session = ActionContext.getContext().getSession();
 		Users user=(Users)session.get("user");
@@ -84,13 +133,26 @@ public class EmailAction extends ActionSupport {
 			String i = user.getUsername()+"@cdjj.com";
 			mailBean.setUsername(i);
 			mailBean.setPassword(user.getUserpassword());
+			mailBean.initSmtpAuth();
 			mailBean.setFrom(user.getUsername());			
 			if(upload!=null&&upload.length()>0){
 				   mailBean.setFile(path+"/"+getUpload());
-				}
-			mailBean.initSmtpAuth();
+				}		
 			SendMail sendMail=new SendMail(mailBean);
-			sendMail.sendMail();
+			MimeMessage msg = sendMail.createMimeMessage();
+			sendMail.sendMail(msg);
+			System.out.println("--------------------------");
+			//保存到已发送
+			//Message message=sendMail.createMimeMessage();
+		   // Message[] messages={message};
+		    //System.out.println(messages.length);
+		    ReceiveMail receiveMail =new ReceiveMail(i,user.getUserpassword()); 
+		    receiveMail.copyMessage(new Message[]{msg}, MailConstant.FOLDER_SENDED);
+		    receiveMail.close();
+		    
+		   // Message[] messages=new Message[]{new SendMail(mailBean).createMimeMessage()};
+		   // receiveMail.copyMessage(messages, MailConstant.FOLDER_SENDED);
+		    //receiveMail.moveMessage(MailConstant., destFolder, mailBean.getMessageUID());
 			return "recipients_success";
 		}else{
 			return "fail";
@@ -106,18 +168,25 @@ public class EmailAction extends ActionSupport {
 	  * @throws Exception
 	  */
 	 public String communal(String dd ) throws Exception{	
-		  //获取用户信息
+		//获取用户信息
 	       session = ActionContext.getContext().getSession();
 	       Users user=(Users)session.get("user");  
-          //判断用户权限
+        //判断用户权限
 	       if(user.getCondition1()==1){     
 	          String i = user.getUsername()+"@cdjj.com";	
 	          ReceiveMail receiveMail =new ReceiveMail(i,user.getUserpassword());
 	          IMAPFolder folder = receiveMail.openFolder(dd, Folder.READ_WRITE);  	      
-	          mailInfo=receiveMail.getMailList(folder);
+	          messageUID=receiveMail.getMessageUIDs(folder);
+	         if(messageUID!=null){ 
+	          Page page1=new Page();
+	          page1.setIndex(index);
+	          page1.setTotalCount(messageUID.length);
+	          totalPageCount=page1.getTotalPageCount();
+	          mailInfo=receiveMail.getMailList(page1.getStartRow(), page1.getEndRow(), messageUID);          
 	          //关闭资源
 	          receiveMail.close(); 
-	        //判断文件夹类型,设置返回值  
+	         }  
+	        //判断文件夹类型,设置返回值   
 	        if(dd.equals(MailConstant.FOLDER_INBOX)){  
   		     return "receiveMail_success";			       
 	        }else if(dd.equals(MailConstant.FOLDER_DELETE)){
@@ -165,14 +234,26 @@ public class EmailAction extends ActionSupport {
 	 
 	 
     /**
-     * 删除邮件(移动到已删除邮件箱)
+     * 删除邮件(收件箱)
      * @throws MessagingException 
      */
 	public String deleteMail() throws MessagingException{
 		receiveMail =validateUser();	    	       
 	    receiveMail.moveMessage(MailConstant.FOLDER_INBOX, MailConstant.FOLDER_DELETE,messageUID);	       		
 	    return "receiveMail_success";
-	}	
+	}
+	//删除邮件(草稿箱)
+	public String deleteMailD() throws MessagingException{
+		receiveMail =validateUser();	    	       
+	    receiveMail.moveMessage(MailConstant.FOLDER_DRAFT, MailConstant.FOLDER_DELETE,messageUID);	       		
+	    return "deleteMailD";
+	}
+	//删除邮件(已发送)
+		public String deleteMailS() throws MessagingException{
+			receiveMail =validateUser();	    	       
+		    receiveMail.moveMessage(MailConstant.FOLDER_SENDED, MailConstant.FOLDER_DELETE,messageUID);	       		
+		    return "deleteMailS";
+		}
 	
 	
 	
@@ -295,6 +376,16 @@ public class EmailAction extends ActionSupport {
     	 getmailBean(MailConstant.FOLDER_SPAM,messageUID[0]);
      	return "getmailBeanL";		
     }
+   //查看邮件内容(已发送)
+     public String getmailBeanS() throws Exception{
+    	 getmailBean(MailConstant.FOLDER_SENDED,messageUID[0]);
+     	return "getmailBeanS";		
+    }
+   //查看邮件内容(草稿箱)
+     public String getmailBeanD() throws Exception{
+    	 getmailBean(MailConstant.FOLDER_DRAFT,messageUID[0]);
+     	return "getmailBeanD";		
+    }
    
      
      /**
@@ -317,6 +408,16 @@ public class EmailAction extends ActionSupport {
      	getmailBean(MailConstant.FOLDER_SPAM,messageUID[0]); 
      	 return "transmitMailL";
       }
+   //转发(已发送)
+     public String transmitMailS() throws Exception{
+     	getmailBean(MailConstant.FOLDER_SENDED,messageUID[0]); 
+     	 return "transmitMailS";
+      }
+   //转发(草稿箱)
+     public String transmitMailD() throws Exception{
+     	getmailBean(MailConstant.FOLDER_DRAFT,messageUID[0]); 
+     	 return "transmitMailD";
+      }
      
      
      
@@ -329,10 +430,44 @@ public class EmailAction extends ActionSupport {
 	 * @throws UnsupportedEncodingException 
 	  */
 	 public String savedraft() throws MessagingException, UnsupportedEncodingException{ 
-		 return "savedraft";
+		//获取当前登录用户
+			session = ActionContext.getContext().getSession();
+			Users user=(Users)session.get("user");
+			//验证用户邮箱状态
+			if(user.getCondition1()==1){
+	        //调用发送邮件的方法		
+				String i = user.getUsername()+"@cdjj.com";
+				mailBean.setUsername(i);
+				mailBean.setPassword(user.getUserpassword());
+				mailBean.setFrom(user.getUsername());			
+				if(upload!=null&&upload.length()>0){
+					   mailBean.setFile(path+"/"+getUpload());
+					}
+		    SendMail sendMail=new SendMail(mailBean);
+		    Message message=sendMail.createMimeMessage();
+		    Message[] messages={message};
+		    System.out.println(messages.length);
+		    ReceiveMail receiveMail =new ReceiveMail(i,user.getUserpassword()); 
+		    receiveMail.copyMessage(messages, MailConstant.FOLDER_DRAFT);		  
+			}
+		    return "savedraft";
 	 }
-     
-     
+	 
+	 /**
+	  * 下载文件
+	  * @param folderType
+	  * @param uid
+	  * @param fileName
+	  * @return
+	  * @throws Exception
+	  */
+/*	 public String attachmentDownLoad()throws Exception {		  
+		    receiveMail =validateUser();
+		    receiveMail.openFolder(mailBean.getRecord(), Folder.READ_WRITE);
+		    receiveMail.getMessageByUID(mailBean.getMessageUID(), true, mailBean.getFile(), path);// 保存附件到指定的路径中
+		    receiveMail.close();
+			return "attachmentDownLoad";
+		}*/
      
      
      
@@ -353,8 +488,23 @@ public class EmailAction extends ActionSupport {
 	       return receiveMail;
 	}
 	
+/*	*//**
+	 * 附件下载
+	 * @return
+	 * @throws UnsupportedEncodingException 
+	 * @throws UnsupportedEncodingException 
+	 *//*
+	public String download(){
+		String filepath =getDownloadPath() + fileName;
+		String accessory=path+"/"+fileName;
+		File f = new File(getDownloadPath()) ;// 实例化File类的对象
+		f.mkdir();// 创建文件夹	
+		usersDao.downloadFile(filepath,accessory);
+        return "download_success";
 	
-	
+
+	}
+	*/
      
 
 }

@@ -1,12 +1,16 @@
 <%@ page contentType="text/html; charset=utf-8" language="java" import="java.sql.*" errorPage="" %>
 <%@taglib uri="/struts-tags" prefix="s" %>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>无标题文档</title>
-<script type="text/javascript" src="../js/jquery-1.5.1.min.js"></script>
-<script type="text/javascript" src="../js/jQuery.Hz2Py-min.js"></script>
+<script type="text/javascript" src="<%=basePath %>js/jquery-1.5.1.min.js"></script>
+<script type="text/javascript" src="<%=basePath %>js/jQuery.Hz2Py-min.js"></script>
 <script type="text/javascript">			
 	function setit(){
 		var zsname=document.getElementById("zsname").value;
@@ -52,7 +56,7 @@
 </script>
 </head>
 <body >
-<form id="myForm" name="myForm" action="updateuser" method="post">
+<form id="myForm" name="myForm" action="SignatureAndMail" method="post">
 <p align="center" style="font-size:36px; font-family:Tahoma, Geneva, sans-serif">修改用户信息</p>
 		<div class="pages">
 		  <table  width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
@@ -117,7 +121,7 @@
                     <td align="left"><input type="text" name="users.safemail" id="safemail"/></td>
 				</tr> 
 				<tr >
-                    	<td align="right" width="30%"><input type="submit"  id="save" value="注册"  onclick="return setit();"/></td>
+                    	<td align="right" width="30%"><input type="submit"  id="save" value="确定"  onclick="return setit();"/></td>
                    		<td><input type="reset"  id="reset1" value="返回" onclick="fan();"/></td>
 				</tr>
 				<tr>

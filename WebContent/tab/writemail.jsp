@@ -1,33 +1,37 @@
 ﻿<%@ page contentType="text/html; charset=utf-8" language="java" import="java.sql.*" errorPage="" %>
 <%@taglib uri="/struts-tags" prefix="s" %>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>写信</title>
-<script type="text/javascript" charset="utf-8" src="../js/BD/ueditor.config.js"></script>
-<script type="text/javascript" charset="utf-8" src="../js/BD/ueditor.all.min.js"> </script>
-<script type="text/javascript" charset="utf-8" src="../js/BD/lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%=basePath %>js/BD/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%=basePath %>js/BD/ueditor.all.min.js"> </script>
+<script type="text/javascript" charset="utf-8" src="<%=basePath %>js/BD/lang/zh-cn/zh-cn.js"></script>
 <script type="text/javascript">
-    var ue = UE.getEditor('editor');
+    var ue = UE.getEditor('editor');  
 </script>
-<script type="text/javascript" src="../js/BD/third-party/jquery-1.10.2.min.js"></script>
 
 
 
 
-<link type="text/css" rel="stylesheet" href="../js/ext-3.3.1/resources/css/ext-all.css"/>
-<script type="text/jscript" src="../js/ext-3.3.1/adapter/ext/ext-base.js"></script>
-<script type="text/javascript" src="../js/ext-3.3.1/ext-all.js"></script>
-<script type="text/javascript" src="../js/jquery-1.5.1.min.js"></script>
-<script type="text/javascript" src="../js/ajaxfileupload.js"></script>
+
+<link type="text/css" rel="stylesheet" href="<%=basePath %>js/ext-3.3.1/resources/css/ext-all.css"/>
+<script type="text/jscript" src="<%=basePath %>js/ext-3.3.1/adapter/ext/ext-base.js"></script>
+<script type="text/javascript" src="<%=basePath %>js/ext-3.3.1/ext-all.js"></script>
+<script type="text/javascript" src="<%=basePath %>js/jquery-1.5.1.min.js"></script>
+<script type="text/javascript" src="<%=basePath %>js/ajaxfileupload.js"></script>
 
 <style type="text/css">
 .body1{ width:auto; height:auto;}
 .shousuo{ width:160px;height:20px; margin:0; padding:0;}
 input1{ width:160px;height:20px; margin:0; padding:0;}
 .userlist{width:160px;height:300px; margin:0; padding:0;overflow:scroll;}
-li{ text-align:center; cursor:pointer;}
+#user{cursor:pointer;}
 ol{list-style-type:none; margin:0; padding:0;}
 #hello{ float:right; margin:2px; padding-right:20px; padding-bottom:20px}
 #xie{ float:left; margin:2px; padding:4px; width:80%}
@@ -109,21 +113,30 @@ $(document).ready(function(){
 		 }else{
 		  $("input[id='tianjia']").attr("value", "添加密送")
           $("tr[id='tianjia']").hide();			 
-			 }		  
+			 }	 		 
 	 })
 
 	 <!--设置用户列表--!> 
-       $("li").live("mouseover",function(){
+	 $("td[id='user']").live("mouseover",function(){
 	        this.style.background="#CCC";
 	      })
-       $("li").live("mouseout",function(){
-            this.style.background="none";
+     $("td[id='user']").live("mouseout",function(){
+        this.style.background="none";
 	     })
 	     
-        $("li[id='username']").live("click",function(){
+        $("td[id='user']").live("click",function(){
 			 var io =this.title;
 		   $("input[id='title1']").attr("value",io);
 			})
+			
+	<!--添加签名档--！>	 
+	  $("#con").hide();
+   	  var i =$("#con").html();
+	  UE.getEditor('editor').ready(function(){
+        UE.getEditor('editor').setContent(i);
+       })
+			
+			
    })
 					
 <!--实现发送功能--!>	
@@ -139,68 +152,45 @@ function sendemail(){
 
 
 
-Ext.onReady(function(){
-var dateBirthday=new Ext.form.DateField({
-	    DateLabel:"日期",
-		name:"dateBirthday",
-		editable:false,
-		width:100,
-		format:"Y-m-d",
-		value:new Date(),
-	});
-var timeWork=new Ext.form.TimeField({
-	    TimeLabel:"时间",
-		name:"timeWork",
-		editable:false,
-		width:100,
-		fieldLabel:"定时发送",
-		increment:01,
-		format:"H:i"	
-	});
-	
-var win=new Ext.Window({
-	   
-	    layout:'table',
-		layoutConfig: {columns:4},
-		title:"定时发送(请选择日期及时间)",
-		resizable:false,
-		width:236,
-		modal:true,
-		height:88,
-		items:[dateBirthday,{html:" ",width:20},timeWork],		
-		submit:[{text:"确定"}]
-		})	
-		
-$("input[id='save2']").live("click",function(){
-	    var recipients=document.getElementById("title1").value;
-		if(recipients == null||recipients=="" ){
-			alert("收件人不能为空！");
-		}else{
-			 win.show();
-		}
-	
-	})
-	
-})
+
     <!--存草稿--!>
 	function savedraft(){
 	   var recipients=document.getElementById("title1").value
+	   var subjects=document.getElementById("title6").value
+	   var contents=document.getElementById("editor").value
 	   if(recipients == null||recipients=="" ){
 		  alert("收件人没有写,不能存为草稿！");
+	   }else if(subjects == null||subjects==""){
+		   alert("主题没有写,不能存为草稿！");
 	   }else{
 	   document.getElementById("myForm").action="savedraft";
 	   document.forms[0].submit();
 	   }
-      }		
+      }	
+	
+	function woc(){
+		var dateBirthday =Ext.getCmp('dateBirthday').getValue();
+		var u=document.getElementById("aaaaaa").value()
+	}
+	
+	<!--添加常用联系人--!>
+	function adduser(){
+		var users=document.getElementById("addus").value
+		if(users==null||users==""){
+			alert("请输入邮箱名")
+		}else{
+			 document.forms[1].submit();
+		}
+
+	}
+	
 </script>
 </head>
 
 <body>
-
+<br />
 <div id="xie">
-
 <form id="myForm" name="myForm" action="writemail" method="post" enctype="multipart/form-data">      
-
 		<div class="pages">
 			<table width="90%" border="0" cellspacing="0" cellpadding="0">
 				<tr id="shoujian">
@@ -252,7 +242,6 @@ $("input[id='save2']").live("click",function(){
 				<tr>
 					<td align="left" colspan="2" style=" padding-left:16%"> 
                         <span><input type="submit"  id="save1" value="发送" onclick="return sendemail();" /></span>
-                        <span><input type="button"  id="save2" value="定时发送"   /></span>
                         <span><input type="button"  id="save3" value="存草稿" onclick="savedraft()"/></span>               
 				    </td>
                 </tr>
@@ -270,12 +259,30 @@ $("input[id='save2']").live("click",function(){
 <div id="hello">
 <fieldset>
   <div class="userlist">
-    <ol>
-      <br/>
-      <s:iterator var="users1" value="#session.user.relational" status="status">
-      <li id="username"  title="<s:property value="friend.username" />@cdjj.com"><s:property value="friend.zsname" /></li>
-      </s:iterator>
-    </ol>
+  
+  <form action="addusers" method="post">
+  <table>
+  <tr><td ><input type="text"  id="addus"  name="users.username"/></td></tr>
+  <tr><td align="left"><input type="button" value="添加" onclick="adduser()"/></td></tr>
+  </table> 
+  </form>
+       
+     <s:iterator var="users1" value="#session.user.relational" status="status">
+       <table id="ddddddd" width="100%" border="0" cellspacing="0" cellpadding="0" >  
+          <tr name="RM">             
+           <td  align="center"  width="70%" id="user"  title="<s:property value="friend.username" />@cdjj.com"><s:property value="friend.zsname" /></td>                   
+           <td  align="center"  ><a href="<%=basePath %>removeUser.action?users.userid=<s:property value="friend.userid"/>">删除</a></td>		   
+          </tr>             
+       </table>
+     </s:iterator>
+     
+     
+  </div>
+  <div id="con">
+   <br /><br /><br /><br /><br /><br /><br /><br />
+   <p>------------------ 签名 ------------------</p>
+   <s:property value="#session.user.signature"/>
+
   </div>
 </fieldset>  
   </div>

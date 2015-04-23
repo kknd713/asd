@@ -9,13 +9,29 @@
     <constant name="struts.i18n.encoding" value="UTF-8" />
     <constant name="struts.devMode" value="true" />
     <constant name="struts.objectFactory" value="spring"/>	
-         <!-- 登录-->
+         
 	<package name="default" extends="struts-default" namespace="/">
+	    <!-- 登录-->
 		<action name="userlogin" class="com.wanggang.web.action.UsersAction" method="login">
 		    <result name="login_success">/main.jsp</result>
 			<result name="login_out">/login.jsp</result>
 			<result name="fail">/error.jsp</result>
 		</action>
+		<!-- 激活页面-->
+		<action name="mailCondition" class="com.wanggang.web.action.UsersAction" method="mailCondition">
+		    <result name="mailCondition">/tab/activationMail.jsp</result>
+			<result name="fail">/error.jsp</result>
+		</action>
+		<!-- 激活邮箱 -->
+	    <action name="activation" class="com.wanggang.web.action.UsersAction" method="activation">
+	         <result name="activation">/tab/activationMail.jsp</result>
+             <result name="input">/error.jsp</result>
+	    </action>
+		<!-- 加载写信 -->
+	<action name="loadwritemail" class="com.wanggang.web.action.EmailAction" method="loadwritemail">	
+	        <result name="success">/tab/writemail.jsp</result>
+            <result name="input">/error.jsp</result>        
+	</action>
 	     <!-- 注销-->	
 		<action name="userout" class="com.wanggang.web.action.UsersAction" method="out">
 			<result name="out_success" >/login.jsp</result>
@@ -32,10 +48,21 @@
 	        <result name="users_success">/tab/user_ information.jsp</result>
             <result name="input">/error.jsp</result>
 	</action>	
-		<!-- 修改员工信息 -->
-	<action name="updateuser" class="com.wanggang.web.action.UsersAction" method="updateuser">
-	        <result name="account_success">/tab/tab_add_user.jsp</result>
-            <result name="fail">/tab/tab_add_user.jsp</result>
+	<!-- 用户信息修改 -->
+	<action name="SignatureAndMail" class="com.wanggang.web.action.UsersAction" method="SignatureAndMail">
+	        <result name="updatepassword">/tab/tab_password_user.jsp</result>
+	        <result name="SignatureAndMail">/tab/tab_update_user_yh.jsp</result>
+	        <result name="updateusers">/tab/tab_update_user.jsp</result>
+            <result name="input">/error.jsp</result>
+	</action>
+	<!-- 删除常用联系人 -->
+	<action name="removeUser" class="com.wanggang.web.action.UsersAction" method="removeUser">
+	        <result name="removeUser">/tab/writemail.jsp</result>
+            <result name="input">/error.jsp</result>
+	</action>
+	<!-- 添加常用联系人 -->
+	<action name="addusers" class="com.wanggang.web.action.UsersAction" method="addusers">
+	        <result name="addusers">/tab/writemail.jsp</result>
             <result name="input">/error.jsp</result>
 	</action>
 	
@@ -83,11 +110,23 @@
 	        <result name="receiveMail_success">/tab/readmail.jsp</result>
             <result name="input">/error.jsp</result>        
 	</action>
-	   <!-- 删除信件(移动到已删除) -->
+	   <!-- 删除信件(收件箱) -->
 	<action name="deleteMail" class="com.wanggang.web.action.EmailAction" method="deleteMail">	
 	        <result name="receiveMail_success"  type="redirect">/tab/readmail.jsp</result>
             <result name="input">/error.jsp</result>        
 	</action>
+	<!-- 删除信件(草稿箱) -->
+	<action name="deleteMailD" class="com.wanggang.web.action.EmailAction" method="deleteMailD">	
+	        <result name="deleteMailD"  type="redirect">/tab/draftmail.jsp</result>
+            <result name="input">/error.jsp</result>        
+	</action>
+	<!-- 删除信件(已发送) -->
+	<action name="deleteMailS" class="com.wanggang.web.action.EmailAction" method="deleteMailS">	
+	        <result name="deleteMailS"  type="redirect">/tab/yifasong.jsp</result>
+            <result name="input">/error.jsp</result>        
+	</action>
+	
+	
 	
 	
 	   <!-- 彻底删除(收件箱) -->
@@ -165,6 +204,16 @@
 	        <result name="getmailBeanL">/tab/cotent.jsp</result>
             <result name="input">/error.jsp</result>        
 	</action>
+	<!-- 查看邮件内容(草稿箱) --> 
+	<action name="getmailBeanD" class="com.wanggang.web.action.EmailAction" method="getmailBeanD">	
+	        <result name="getmailBeanD">/tab/cotent.jsp</result>
+            <result name="input">/error.jsp</result>        
+	</action>
+	<!-- 查看邮件内容(已发送) --> 
+	<action name="getmailBeanS" class="com.wanggang.web.action.EmailAction" method="getmailBeanS">	
+	        <result name="getmailBeanS">/tab/cotent.jsp</result>
+            <result name="input">/error.jsp</result>        
+	</action>
 	
 	
 	<!-- 转发(收件箱) --> 
@@ -172,7 +221,7 @@
 	        <result name="transmitMailR">/tab/writemail-transmit.jsp</result>
             <result name="input">/error.jsp</result>        
 	</action>
-	<!-- 转发(已删除箱) --> 
+	<!-- 转发(已删除) --> 
 	<action name="transmitMailY" class="com.wanggang.web.action.EmailAction" method="transmitMailY">	
 	        <result name="transmitMailY">/tab/writemail-transmit.jsp</result>
             <result name="input">/error.jsp</result>        
@@ -182,7 +231,16 @@
 	        <result name="transmitMailL">/tab/writemail-transmit.jsp</result>
             <result name="input">/error.jsp</result>        
 	</action>
-	
+	<!-- 转发(已发送) --> 
+	<action name="transmitMailS" class="com.wanggang.web.action.EmailAction" method="transmitMailS">	
+	        <result name="transmitMailS">/tab/writemail-transmit.jsp</result>
+            <result name="input">/error.jsp</result>        
+	</action>
+	<!-- 转发(草稿箱) --> 
+	<action name="transmitMailD" class="com.wanggang.web.action.EmailAction" method="transmitMailD">	
+	        <result name="transmitMailD">/tab/writemail-transmit.jsp</result>
+            <result name="input">/error.jsp</result>        
+	</action>
 	
 	
 	
@@ -195,6 +253,21 @@
 	        <result name="savedraft">/tab/writemail.jsp</result>
             <result name="input">/error.jsp</result>        
 	</action>	
+	
+	
+	
+	
+	
+	   <!-- 附件下载 -->
+          <action name="DownLoadAction" class="com.wanggang.web.action.DownLoadAction" >
+			  
+			  <result name="success" type="stream">
+				<param name="contentType">application/x-msdownload;charset=ISO8859-1</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">attachment;filename=${filename}</param>
+				<param name="bufferSize">4096</param>		     							
+			</result>
+		</action>
 
 
 
